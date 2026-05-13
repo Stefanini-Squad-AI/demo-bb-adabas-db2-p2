@@ -1,3 +1,4 @@
+* Referência legado ADABAS (DBATDP-1). Persistência alvo: DB2 (ver DB2/T_ADABAS_SOCIOS.sql).
 DDM DBID 0      DDM FNR 24    VSAM Name  ADABAS-SOCIOS 2       Default Sequence
 T L  DB Name                             F  Leng  S D Remark                   
 - -  -- -------------------------------- - -----  - - ------------------------ 
