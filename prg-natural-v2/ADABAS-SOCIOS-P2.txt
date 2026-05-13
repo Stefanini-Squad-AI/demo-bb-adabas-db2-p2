@@ -1,0 +1,18 @@
+DDM DBID 0      DDM FNR 24    VSAM Name  ADABAS-SOCIOS 2       Default Sequence
+T L  DB Name                             F  Leng  S D Remark                   
+- -  -- -------------------------------- - -----  - - ------------------------ 
+  1  AA NUMB-SOCIO-PRINCIPAL             N   9,0  N D  Numero do RG do Sócio                          
+  1  AB NOME-SOCIO-PRINCIPAL             C    40  N    Nome completo do Sócio
+  1  AC DATA-CADASTRO                    D     6  N    Data de cadastro do sócio
+P 1  AD PERIODICO-PAGAMENTO
+  2  AE DATA-VENCIMENTO                  D     6  N    Data do vencimento
+  2  AF VALR-MENSALIDADE                 P   6,2  N    Valor da mensalidade do sócio
+  2  AG PAGAMENTO-OK                     L     1  N    TRUE = OK, FALSE = não paga 
+  1  BA CATG-SOCIO                       I     2  N    1 -Principal 2 - Dependente                           
+  1  CB DATA-BAIXA                       D     6  N    DATA DE FIM DO CONTRATO
+  1  CC HORA-BAIXA                       T    12  N    HORA DO FIM DO CONTRATO
+  1  DA OBSV-SOCIO                       A   500  N    Observação do sócio
+*       -------- SOURCE FIELD(S) -------                                       
+*       CATG-SOCIO(1-2)                                                   
+
+ 
