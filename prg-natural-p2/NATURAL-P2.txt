@@ -1,3 +1,6 @@
+* Legacy path: direct ADABAS FIND/STORE on ADABAS-SOCIOS.
+* Phase 2 DB2 routing: see prg-natural/STFPCS00-P2.txt (CALL STFSC00C / STFSC00I).
+*
 DEFINE DATA 
 LOCAL
 1 SOCIO VIEW OF ADABAS-SOCIOS
