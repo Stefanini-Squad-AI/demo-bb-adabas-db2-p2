@@ -1,0 +1,48 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+**********************************************************************
+* LDA NATURAL ........: BKSOCIO                                       *
+* OBJETIVO ...........: AREA DE COMUNICACAO NATURAL X COBOL PARA      *
+*                       A ENTIDADE SOCIO (ACESSO A DB2 VIA            *
+*                       SUBPROGRAMAS STFSC00C / STFSC00I).            *
+* USO ................: LOCAL USING BKSOCIO                           *
+* SUPORTA ............: OPERACOES I (INCLUSAO), A (ALTERACAO),        *
+*                       E (EXCLUSAO) E C (CONSULTA) - APENAS I E C    *
+*                       SAO EFETIVAMENTE USADAS NESTA MIGRACAO.       *
+*                                                                     *
+* IMPORTANTE .........: ESTA LDA E O COPYBOOK COBOL Cobol/src/        *
+*                       BKSOCIO.cpy DEVEM SER MANTIDOS EM TOTAL       *
+*                       SINCRONIA (MESMA HIERARQUIA, NOMES, TIPOS,    *
+*                       TAMANHOS, OCCURS E REDEFINES).                *
+*                                                                     *
+* DATAS ..............: CAMPOS DE DATA TRAFEGAM COMO A10 NO FORMATO   *
+*                       ISO YYYY-MM-DD. UTILIZAR MOVE EDITED COM      *
+*                       MASCARA (EM=YYYY-MM-DD) AO CONVERTER          *
+*                       ENTRE CAMPOS NATURAL DO TIPO D E ESTES        *
+*                       CAMPOS ALFANUMERICOS.                         *
+**********************************************************************
+1 BK-SOCIO
+*--- AREA DE CONTROLE ------------------------------------------------*
+  2 BKS-OPERACAO              (A1)
+  2 BKS-RETURN-CODE           (N4)
+  2 BKS-SQLCODE               (I4)
+  2 BKS-MENSAGEM              (A72)
+*--- DADOS DO SOCIO (TABELA PRINCIPAL) -------------------------------*
+  2 BKS-DADOS-SOCIO
+    3 BKS-NUMB-SOCIO-PRIN     (N9)
+    3 BKS-NOME-SOCIO-PRIN     (A40)
+    3 BKS-DATA-CADASTRO       (A10)
+    3 BKS-CATG-SOCIO          (N2)
+    3 BKS-INDI-DIVIDA         (A1)
+    3 BKS-DATA-BAIXA          (A10)
+    3 BKS-HORA-BAIXA          (A26)
+    3 BKS-OBSV-SOCIO          (A500)
+*--- MENSALIDADES (PE PERIODICO-PAGAMENTO - TABELA FILHA) ------------*
+  2 BKS-QTD-MENSALIDADES      (N2)
+  2 BKS-TAB-MENSALIDADES (12)
+    3 BKS-NUMR-PARCELA        (N2)
+    3 BKS-DATA-VENCIMENTO     (A10)
+    3 BKS-VALR-MENSALIDADE    (P4.2)
+    3 BKS-PAGAMENTO-OK        (A1)
