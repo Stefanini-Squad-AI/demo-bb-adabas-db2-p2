@@ -1,3 +1,4 @@
+* LEGADO ADABAS (DBATDP-1 P2) — DDM de referência; acesso em runtime substituído por Natural -> COBOL -> DB2.
 DDM DBID 0      DDM FNR 24    VSAM Name  ADABAS-SOCIOS 2       Default Sequence
 T L  DB Name                             F  Leng  S D Remark                   
 - -  -- -------------------------------- - -----  - - ------------------------ 
