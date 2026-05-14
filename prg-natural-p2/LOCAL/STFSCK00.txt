@@ -1,0 +1,32 @@
+* STFSCK00.txt - Natural LOCAL Book for SOCIOS Migration
+* Mirrors COBOL copybook STFSCK00.cpy
+* Contains entity, payment, and communication structures
+*
+DEFINE DATA LOCAL
+*
+* Entity Book: Main SOCIOS table fields
+1 SOCIOS-BOOK
+  2 NUMB-SOCIO-PRINCIPAL     (N9)
+  2 NOME-SOCIO-PRINCIPAL     (A40)
+  2 DATA-CADASTRO            (A10)
+  2 CATG-SOCIO               (N5)
+  2 INDI-DIVIDA              (N5) INIT <0>
+  2 DATA-BAIXA               (A10)
+  2 HORA-BAIXA               (A12)
+  2 OBSV-SOCIO               (A500)
+*
+* Payment Book: Array of 12 payment records (PERIODICO-PAGAMENTO)
+1 PAGAMENTO-BOOK
+  2 PAGAMENTO-REC (12)
+    3 DATA-VENCIMENTO        (A10)
+    3 VALR-MENSALIDADE       (P6.2)
+    3 PAGAMENTO-OK           (L1)
+*
+* Communication Book: Operation and control fields
+1 COMM-BOOK
+  2 OPERATION-CODE           (A1)
+  2 RETURN-CODE              (N2) INIT <0>
+  2 ERROR-MESSAGE            (A255)
+  2 RECORD-COUNT             (N4) INIT <0>
+*
+END-DEFINE
