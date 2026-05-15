@@ -1,0 +1,28 @@
+name: ci-pipeline-card-demo
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend-migration-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cobol artefatos e SQL embutido
+        run: bash tests/cobol-compile-test.sh
+
+      - name: Natural refatorado + LDA
+        run: bash tests/natural-compile-test.sh
+
+      - name: Smoke SQL (não requer DB2 — valida presença de scripts)
+        run: |
+          test -f DB2/CRIAR_SOCIOS.sql
+          test -f tests/db2-migration-test.sql
+          test -f tests/socios-periodico-limit-test.sql
+
+      - name: Placeholders de testes COBOL
+        run: |
+          ls tests/*.cobol
