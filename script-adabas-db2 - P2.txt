@@ -1,0 +1,263 @@
+# Prompt
+
+## Produto 1
+
+Será realizada a migração de um programa Natural que atualmente lê dados do ADABAS para um novo fluxo em que o programa Natural fará chamada para um programa COBOL responsável pelo acesso ao DB2.
+
+Execute as tarefas abaixo com base no arquivo NATURAL informado no input e realizando a migração da estrutura ADABAS para DB2.
+
+# Inputs
+
+Arquivos de referência:
+
+- Arquivo NATURAL:
+  prg-natural-p2/STFPCS00-P2.txt
+
+- Arquivo ADABAS:
+  prg-natural-p2/ADABAS-SOCIOS-P2.txt
+
+# Regras de geração dos arquivos
+
+Todos os arquivos gerados devem seguir a organização abaixo:
+
+- Programas COBOL:
+  Pasta Cobol
+
+- Books COBOL:
+  Pasta Cobol\src
+
+- Scripts DB2:
+  Pasta DB2
+
+- Programas Natural originais:
+  Manter em prg-natural-p2
+
+# Objetivo
+
+Converter o fluxo atual:
+
+Natural > ADABAS
+
+Para o novo fluxo:
+
+Natural > COBOL > DB2
+
+# Tarefas
+
+Com base no arquivo ADABAS informado no input, gerar os seguintes artefatos:
+
+1. Um script de criação das tabelas DB2:
+   - Destino:
+     Pasta DB2
+
+2. Book de comunicação entre o programa Natural e o COBOL:
+   - Layout compatível com DB2
+   - Tipo:
+     BOOK LOCAL 
+
+# Programas COBOL
+
+Os programas COBOL devem executar operações DB2 conforme as ações abaixo:
+
+- I = Inclusão
+- A = Alteração
+- E = Exclusão
+- C = Consulta
+
+## Padrão de nomenclatura
+
+Estrutura:
+
+STF + S + C + 00 + [AÇÃO]
+
+Onde:
+
+- STF = Stefanini
+- S = Subprograma
+- C = COBOL
+- 00 = Sequencial
+- A/E/I/C = Tipo de operação
+
+## Exemplos
+
+- STFSC00A = Programa de alteração
+- STFSC00E = Programa de exclusão
+- STFSC00I = Programa de inclusão
+- STFSC00C = Programa de consulta
+
+# Regras Gerais
+
+## Programas Natural
+
+- Alterar os programas da pasta prg-natural-p2 removendo o acesso ao adabas pelos novos programas COBOL/DB2.
+
+- Comentários nos acessos antigos ao ADABAS para identificar os pontos de alteração
+
+- Não alterar a quantidade de arquivos NATURAL da pasta original prg-natural-p2.
+  Se houver N programas na pasta prg-natural-p2, manter os N programas.
+
+## Comunicação Natural x COBOL
+
+Gerar:
+1. Um copybook COBOL reutilizável da(s) entidade(s), compatível com WORKING-STORAGE SECTION, LINKAGE SECTION, FILE SECTION
+   e outras áreas do programa na pasta "Cobol\src". Gere um COPYBOOK COBOL usando apenas 1 nível 01 como estrutura principal.  
+2. Uma book LOCAL DATA AREA (LDA) Natural equivalente na pasta "prg-natural\LOCAL". Esse book LOCAL deve ser usado na DEFINE DATA 
+   como: Ex: LOCAL USING "Nome_Local".
+
+A estrutura da LDA deve refletir integralmente o copybook COBOL, preservando hierarquia, nomes de campos, tipos, tamanhos, 
+OCCURS e REDEFINES, garantindo equivalência funcional entre COBOL e Natural.
+
+- É proibido gerar o código sem o book do Cobol e a Local do natural, esses dois artefatos devem ser gerados
+  em todas as execuções.
+
+- O book deve suportar as operações:
+  - I
+  - A
+  - E
+  - C
+
+- O book deve conter tamb1ém o respectivo return code.
+
+## Regras de Datas
+
+Quando houver campos de data:
+
+- Utilizar o padrão DB2:
+
+  YYYY-MM-DD
+
+- Não mover diretamente para COBOL campos tipo D do Natural.
+
+- Deve ser realizado:
+  - MOVE EDITED
+  - utilizando máscara:
+    YYYY-MM-DD
+
+## Regras do Programa COBOL
+
+O programa COBOL deve conter toda a lógica necessária para acesso ao DB2.
+
+### WORKING-STORAGE SECTION
+
+Declarar SOMENTE:
+
+- Variáveis constantes
+- Literais fixos
+- Códigos fixos
+- Mensagens constantes
+- Flags constantes
+- Valores imutáveis do programa
+
+### LOCAL-STORAGE SECTION
+
+Declarar SOMENTE:
+
+- SQLCA
+- BOOKs de entidades
+- BOOK de comunicação Natural x COBOL
+- Host variables DB2
+- Indicadores DB2
+- Cursores
+- Estruturas temporárias de execução
+
+## Scripts DB2
+
+- Os scripts DB2 devem ser compatíveis com a estrutura identificada nos arquivos NATURAL e ADABAS.
+- 
+
+# Regras de Geração das Operações
+
+Criar somente programas COBOL para operações efetivamente encontradas no código Natural.
+
+## Exemplos
+
+- FIND:
+  gerar somente programa de consulta
+
+- STORE:
+  gerar somente programa de inclusão
+
+## Importante
+
+Não gerar automaticamente programas de:
+- Exclusão
+- Alteração
+
+Caso essas operações não existam no código fonte.
+
+## MODELAGEM DE DADOS (REGRA CRÍTICA E INEGOCIÁVEL)
+
+### PROIBIDO FLATTEN DE GRUPOS PERIÓDICOS (PE)
+
+## Atenção
+
+Os nomes das tabelas descritas nessa sessão são apenas de exemplo.
+As tabelas devem ser criadas com nomes a partir do código fornecido.
+
+É PROIBIDO gerar estruturas como no exemplo:
+
+TELEFONE_1
+TELEFONE_2
+TELEFONE_3
+
+ENDERECO_1
+ENDERECO_2
+
+### CONVERSÃO OBRIGATÓRIA DE PE
+
+Cada grupo periódico (PE) DEVE ser convertido em tabela filha (modelo relacional 1N).
+Se não existir PERIÓDICOS (PE) na estrutura Adabas, não é necessário criar a tabela DB2 1N,
+desconsidere as instruções do tópico "CONVERSÃO OBRIGATÓRIA DE PE".
+
+#### Exemplo
+
+##### ADABAS
+
+CLIENTE com TELEFONES (PE)
+
+##### DB2
+
+CLIENTE
+CLIENTE_TELEFONE
+
+### ESTRUTURA DAS TABELAS FILHAS
+
+Cada tabela filha deve conter
+
+ Chave primária própria
+ Chave estrangeira referenciando a tabela principal
+
+### NÃO LIMITAR REGISTROS
+
+ A modelagem deve permitir crescimento ilimitado
+ É PROIBIDO impor limites artificiais
+
+### NORMALIZAÇÃO OBRIGATÓRIA
+
+ Evitar redundância
+ Seguir modelo relacional consistente
+
+## NOMENCLATURA PADRÃO
+
+### TABELAS
+
+Nome baseado na entidade de negócio.
+
+#### Exemplos
+
+CLIENTE
+CLIENTE_TELEFONE
+CLIENTE_ENDERECO
+	
+# Restrições
+
+- Não criar documentação adicional explicando o processo de migração.
+- Gerar apenas os artefatos solicitados.
+
+# Obrigatório 
+
+- Revisar o resultado final, os artefatos gerados devem conter Obrigatóriamente, sem exceções:
+  Programas Cobol criados com acesso a camada DB2 na pasta "Cobol"
+  Books do cobol na pasta "Cobol" e as LOCAL do natural na pasta "prg-natural-p2". 
+  Programas Natural atualizados com acesso aos dados via COBOL/DB2 na pasta "prg-natural-p2".
+- Reprocessar o resultado novamente, caso não siga as orientações de geração de códigos conforme o tópico "Obrigatório".  
