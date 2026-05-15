@@ -1,0 +1,23 @@
+* STFSC00.NSL - Natural LOCAL DATA AREA (LDA)
+* Purpose: Communication area for Natural-COBOL exchange
+*          Mirrors COBOL copybook STFSC00.cpy
+* Created: 2026-05-15
+*
+DEFINE DATA LOCAL
+1 STFSC00-AREA
+  2 OPERACAO                          (A1)
+  2 RETURN-CODE                       (I4)
+  2 NUMB-SOCIO-PRINCIPAL             (N9)
+  2 NOME-SOCIO-PRINCIPAL             (A40)
+  2 DATA-CADASTRO                    (A10)
+  2 CATG-SOCIO                       (I4)
+  2 DATA-BAIXA                       (A10)
+  2 HORA-BAIXA                       (A12)
+  2 OBSV-SOCIO                       (A500)
+  2 QTD-PAGAMENTOS                   (N2)
+  2 PAGAMENTOS
+    3 PAGAMENTO                      OCCURS 12 TIMES
+      4 DATA-VENCIMENTO              (A10)
+      4 VALR-MENSALIDADE             (P5.2)
+      4 PAGAMENTO-OK                 (A1)
+END-DEFINE.
