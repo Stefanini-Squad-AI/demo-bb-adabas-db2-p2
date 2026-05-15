@@ -50,7 +50,11 @@ Com base no arquivo ADABAS informado no input, gerar os seguintes artefatos:
    - Destino:
      Pasta DB2
 
-2. Book de comunicação entre o programa Natural e o COBOL:
+2. Criar um excel no formato igual ao arquivo tabela adabas db2 socio.xlsx.
+   - Destino:
+     Pasta DB2\Artefatos
+
+3. Book de comunicação entre o programa Natural e o COBOL:
    - Layout compatível com DB2
    - Tipo:
      BOOK LOCAL 
@@ -132,6 +136,7 @@ Quando houver campos de data:
   - MOVE EDITED
   - utilizando máscara:
     YYYY-MM-DD
+  - Quando houver campo hora: utilizar o padrão HH:MM
 
 ## Regras do Programa COBOL
 
