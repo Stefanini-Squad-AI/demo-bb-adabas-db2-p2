@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: socios-migration
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/socios?createDatabaseIfNotExist=true&characterEncoding=utf8}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+socios:
+  mensalidade-por-categoria:
+    "1": 150.00
+    "2": 75.00
+
+server:
+  port: 8080
