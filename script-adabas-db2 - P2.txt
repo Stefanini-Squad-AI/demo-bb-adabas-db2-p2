@@ -105,6 +105,12 @@ Onde:
 Gerar:
 1. Um copybook COBOL reutilizável da(s) entidade(s), compatível com WORKING-STORAGE SECTION, LINKAGE SECTION, FILE SECTION
    e outras áreas do programa na pasta "Cobol\src". Gere um COPYBOOK COBOL usando apenas 1 nível 01 como estrutura principal.  
+3. O return code do copybook do Cobol deve refletir os return code do DB2, onde:
+   - +000: Registro localizado
+   - +100: Registro não localizado
+   - +803: Erro insert: chave duplicado
+   - Outros return code, o tratamento do erro será realizado genericamente.
+   - Esse processamento deve-se refletir nos programas COBOL e Natural para o return code.
 2. Uma book LOCAL DATA AREA (LDA) Natural equivalente na pasta "prg-natural\LOCAL". Esse book LOCAL deve ser usado na DEFINE DATA 
    como: Ex: LOCAL USING "Nome_Local".
 
@@ -165,10 +171,16 @@ Declarar SOMENTE:
 - Cursores
 - Estruturas temporárias de execução
 
+## Processamento DB2 Cobol 
+
+- Para operações que realizem múltiplas consultas, leituras ou processamentos repetitivos em uma
+  tabela DB2, deve-se obrigatoriamente utilizar cursor para recuperação dos dados.
+
 ## Scripts DB2
 
 - Os scripts DB2 devem ser compatíveis com a estrutura identificada nos arquivos NATURAL e ADABAS.
-- 
+- Campos SUPER do Adabas não devem ser migrados como colunas físicas no DB2; devem ser convertidos
+  em índices compostos ou estruturas equivalentes de acesso. 
 
 # Regras de Geração das Operações
 
