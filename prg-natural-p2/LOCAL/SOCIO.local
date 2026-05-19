@@ -1,0 +1,24 @@
+*> ================================================================
+*> LOCAL DATA AREA: SOCIO
+*> Purpose: Communication structure between COBOL and Natural
+*>          for SOCIO (member) entity
+*> Author: Automated Migration
+*> Date: 2026-05-19
+*> ================================================================
+DEFINE DATA LOCAL
+1 SOCIO-RECORD
+  2  NUMB-SOCIO-PRINCIPAL         (N9)
+  2  NOME-SOCIO-PRINCIPAL         (A40)
+  2  DATA-CADASTRO                (A10)
+  2  PERIODICO-PAGAMENTO
+      3  PAGAMENTO-ITEM (12)
+          4  DATA-VENCIMENTO      (A10)
+          4  VALR-MENSALIDADE     (P6.2)
+          4  PAGAMENTO-OK         (A1)
+  2  CATG-SOCIO                   (N4)
+  2  INDI-DIVIDA                  (A1)
+  2  DATA-BAIXA                   (A10)
+  2  HORA-BAIXA                   (A8)
+  2  OBSV-SOCIO                   (A500)
+  2  RETURN-CODE-SOCIO            (N9)
+END-DEFINE
