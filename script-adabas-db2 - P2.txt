@@ -171,11 +171,56 @@ Declarar SOMENTE:
 - Cursores
 - Estruturas temporárias de execução
 
-## Processamento DB2 Cobol 
+### Processamento DB2 Cobol 
 
 - Para operações que realizem múltiplas consultas, leituras ou processamentos repetitivos em uma
   tabela DB2, deve-se obrigatoriamente utilizar cursor para recuperação dos dados.
 
+### Estrutura interna do programa
+
+Todo programa COBOL gerado deve seguir obrigatoriamente o padrão arquitetural abaixo:
+
+1. A PROCEDURE DIVISION deve conter exclusivamente a sequência principal:
+   - PERFORM INICIALIZA
+   - PERFORM PROCESSA
+   - PERFORM FINALIZA
+
+2. As seções INICIALIZA, PROCESSA e FINALIZA devem existir obrigatoriamente.
+
+3. Responsabilidades de cada seção:
+   - INICIALIZA:
+     abertura de arquivos, inicialização de variáveis, carga de parâmetros e preparação do ambiente.
+   
+   - PROCESSA:
+     execução das regras de negócio, leitura/processamento de registros e chamadas principais.
+   
+   - FINALIZA:
+     fechamento de arquivos, gravação de totais, exibição de mensagens finais e encerramento do programa.
+
+4. O programa deve finalizar com STOP RUN.
+
+5. Não gerar lógica fora dessas seções principais.
+
+Estrutura esperada:
+
+```cobol
+PROCEDURE DIVISION.
+
+    PERFORM INICIALIZA
+    PERFORM PROCESSA
+    PERFORM FINALIZA
+
+    STOP RUN.
+
+INICIALIZA.
+    .
+
+PROCESSA.
+    .
+
+FINALIZA.
+    .
+    
 ## Scripts DB2
 
 - Os scripts DB2 devem ser compatíveis com a estrutura identificada nos arquivos NATURAL e ADABAS.
