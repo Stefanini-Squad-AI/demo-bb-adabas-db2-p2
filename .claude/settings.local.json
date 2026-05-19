@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /workspace/repo/Cobol/src /workspace/repo/DB2/Artefatos /workspace/repo/prg-natural-p2/LOCAL)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Implement SOCIO database migration from Adabas to COBOL/DB2 *)"
+    ]
+  }
+}
