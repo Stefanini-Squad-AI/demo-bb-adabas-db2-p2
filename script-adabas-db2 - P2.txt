@@ -175,6 +175,7 @@ Declarar SOMENTE:
 
 - Para operações que realizem múltiplas consultas, leituras ou processamentos repetitivos em uma
   tabela DB2, deve-se obrigatoriamente utilizar cursor para recuperação dos dados.
+- A declaração de todos os comandos de Cursor do DB2 devem estar declaradas na WORKING STORAGE DIVISION.  
 
 ### Estrutura interna do programa
 
@@ -220,7 +221,7 @@ PROCESSA.
 
 FINALIZA.
     .
-    
+
 ## Scripts DB2
 
 - Os scripts DB2 devem ser compatíveis com a estrutura identificada nos arquivos NATURAL e ADABAS.
