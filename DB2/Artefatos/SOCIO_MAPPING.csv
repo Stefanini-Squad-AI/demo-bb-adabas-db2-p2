@@ -1,0 +1,16 @@
+Entity,Source (Adabas),Target (DB2),Type,Source Type,Target Type,Length,Decimal,Notes
+SOCIO,NUMB-SOCIO-PRINCIPAL,NUMB_SOCIO_PRINCIPAL,PK,Numeric (N9.0),NUMERIC(9),9,0,Primary Key - Member ID/RG
+SOCIO,NOME-SOCIO-PRINCIPAL,NOME_SOCIO_PRINCIPAL,Field,Alphanumeric (C40),VARCHAR(40),40,,Member Full Name
+SOCIO,DATA-CADASTRO,DATA_CADASTRO,Field,Date (D6),DATE,10,,Registration Date - Converted to YYYY-MM-DD
+SOCIO,CATG-SOCIO,CATG_SOCIO,Field,Integer (I2),SMALLINT,2,,Member Category (1=Principal 2=Dependent)
+SOCIO,INDI-DIVIDA,INDI_DIVIDA,Field,Logical (L1),CHAR(1),1,,Debt Indicator (Y/N)
+SOCIO,DATA-BAIXA,DATA_BAIXA,Field,Date (D6),DATE,10,,Contract End Date - Converted to YYYY-MM-DD
+SOCIO,HORA-BAIXA,HORA_BAIXA,Field,Time (T12),TIME,8,,Contract End Time - Converted to HH:MM
+SOCIO,OBSV-CLIENTE,OBSV_SOCIO,Field,Alphanumeric (A500),VARCHAR(500),500,,Member Observations
+SOCIO,SUPER1 (CATG+INDI),INDEX IDX_SOCIO_CATG_DIVIDA,Index,Superimposed (B5),Composite Index,N/A,,Replaced with composite index on CATG_SOCIO + INDI_DIVIDA
+SOCIO_PAGAMENTO,None,ID_PAGAMENTO,PK,N/A,BIGINT,N/A,,Auto-generated identity - Child table primary key
+SOCIO_PAGAMENTO,PERIODICO-PAGAMENTO,NUMB_SOCIO_PRINCIPAL,FK,Group Periodic,NUMERIC(9),9,0,Foreign Key to SOCIO parent table
+SOCIO_PAGAMENTO,DATA-VENCIMENTO,DATA_VENCIMENTO,Field,Date (D6),DATE,10,,Payment Due Date - Converted to YYYY-MM-DD
+SOCIO_PAGAMENTO,VALR-MENSALIDADE,VALR_MENSALIDADE,Field,Packed (P6.2),DECIMAL(6,2),6,2,Monthly Amount Value
+SOCIO_PAGAMENTO,PAGAMENTO-OK,PAGAMENTO_OK,Field,Logical (L1),CHAR(1),1,,Payment Status (Y/N) - Default 0 for new
+Normalization Note,PERIODICO-PAGAMENTO (12 OCCURS),SOCIO_PAGAMENTO Table,Design,Array (Fixed 12),Relational Child Table,Unlimited,,Removes artificial 12-record limit; supports unlimited payment records via parent-child relationship
