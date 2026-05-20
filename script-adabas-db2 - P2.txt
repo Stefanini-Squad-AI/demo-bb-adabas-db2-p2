@@ -291,8 +291,9 @@ CLIENTE_TELEFONE
 
 Cada tabela filha deve conter
 
- Chave primária própria
- Chave estrangeira referenciando a tabela principal
+ - Chave primária própria
+ - Quando existir uma chave estrangeira referenciando a tabela principal em conjunto com um campo sequencial,
+   essa composição deverá ser utilizada como PRIMARY KEY no DB2.
 
 ### NÃO LIMITAR REGISTROS
 
