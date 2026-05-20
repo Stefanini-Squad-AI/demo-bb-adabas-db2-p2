@@ -1,0 +1,23 @@
+* LOCAL DATA AREA - SOCIO_LDA
+* Espelhamento da estrutura COBOL para comunicação com programas COBOL
+*
+
+DEFINE DATA LOCAL
+1 SOCIO-RECORD
+  2 RETURN-CODE-DB2    N(4)
+  2 OPERACAO           A(1)
+  2 NUMB-SOCIO-PRINCIPAL N(9)
+  2 NOME-SOCIO-PRINCIPAL A(40)
+  2 DATA-CADASTRO      A(10)
+  2 CATG-SOCIO         N(4)
+  2 INDI-DIVIDA        N(4)
+  2 DATA-BAIXA         A(10)
+  2 HORA-BAIXA         A(8)
+  2 OBSV-SOCIO         A(500)
+  2 PAGAMENTOS-AREA
+    3 QTD-PAGAMENTOS   N(4)
+    3 PAGAMENTO-ITEM   (12)
+      4 DATA-VENCIMENTO A(10)
+      4 VALR-MENSALIDADE N(8,2)
+      4 PAGAMENTO-OK    N(4)
+END-DEFINE

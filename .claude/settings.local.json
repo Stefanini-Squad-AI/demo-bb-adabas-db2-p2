@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /workspace/repo/DB2/Artefatos /workspace/repo/Cobol/src /workspace/repo/prg-natural-p2/LOCAL)",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
