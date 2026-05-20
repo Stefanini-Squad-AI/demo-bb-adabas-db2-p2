@@ -1,0 +1,30 @@
+* ================================================================
+* LOCAL DATA AREA: STFPCS00
+* Descrição: Estrutura de comunicação Natural <> COBOL
+*            para acesso à tabela SOCIOS em DB2
+* Data: 2026-05-20
+* ================================================================
+* Uso: DEFINE DATA LOCAL USING 'STFPCS00'
+* ================================================================
+
+DEFINE DATA
+LOCAL
+
+1 STFPCS00-AREA
+  2 STFPCS00-OPERACAO       (A1)
+  2 STFPCS00-RETURN-CODE    (N3)
+  2 STFPCS00-DADOS
+    3 SOCIOS-RG             (N9)
+    3 SOCIOS-NOME           (A40)
+    3 SOCIOS-DATA-CADASTRO  (A10)
+    3 SOCIOS-CATG           (N2)
+    3 SOCIOS-DIVIDA         (N1)
+    3 SOCIOS-DATA-BAIXA     (A10)
+    3 SOCIOS-HORA-BAIXA     (A5)
+    3 SOCIOS-OBSV           (A500)
+    3 SOCIOS-PAGAMENTOS OCCURS 12 TIMES
+      4 PAGO-DATA-VENCIMENTO (A10)
+      4 PAGO-VALOR           (N4.2)
+      4 PAGO-STATUS          (N1)
+
+END-DEFINE

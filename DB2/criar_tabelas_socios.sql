@@ -1,0 +1,38 @@
+-- Script de Criação das Tabelas DB2 para Migração SOCIOS
+-- Migração: ADABAS-SOCIOS para DB2
+-- Data: 2026-05-20
+
+-- Criação da tabela principal SOCIOS
+CREATE TABLE SOCIOS (
+    NUMB_SOCIO          NUMERIC(9,0)   NOT NULL,
+    NOME_SOCIO          VARCHAR(40)    NOT NULL,
+    DATA_CADASTRO       DATE           NOT NULL,
+    CATG_SOCIO          SMALLINT       NOT NULL,
+    INDI_DIVIDA         SMALLINT       NOT NULL,
+    DATA_BAIXA          DATE,
+    HORA_BAIXA          TIME,
+    OBSV_SOCIO          VARCHAR(500),
+    PRIMARY KEY (NUMB_SOCIO)
+);
+
+-- Criação da tabela filha SOCIOS_PAGAMENTO (grupo periódico)
+CREATE TABLE SOCIOS_PAGAMENTO (
+    NUMB_SOCIO          NUMERIC(9,0)   NOT NULL,
+    SEQUENCIAL          SMALLINT       NOT NULL,
+    DATA_VENCIMENTO     DATE           NOT NULL,
+    VALR_MENSALIDADE    DECIMAL(6,2)   NOT NULL,
+    PAGAMENTO_OK        SMALLINT       NOT NULL,
+    PRIMARY KEY (NUMB_SOCIO, SEQUENCIAL),
+    CONSTRAINT FK_SOCIOS_PAGAMENTO FOREIGN KEY (NUMB_SOCIO)
+        REFERENCES SOCIOS(NUMB_SOCIO)
+        ON DELETE CASCADE
+);
+
+-- Índice para SUPER1 (composição de CATG_SOCIO + INDI_DIVIDA)
+CREATE INDEX IDX_SOCIOS_SUPER1 ON SOCIOS (CATG_SOCIO, INDI_DIVIDA);
+
+-- Índice para busca por nome
+CREATE INDEX IDX_SOCIOS_NOME ON SOCIOS (NOME_SOCIO);
+
+-- Índice para busca por data de cadastro
+CREATE INDEX IDX_SOCIOS_DATA_CADASTRO ON SOCIOS (DATA_CADASTRO);

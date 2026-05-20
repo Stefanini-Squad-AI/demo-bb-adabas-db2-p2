@@ -1,0 +1,15 @@
+Campo ADABAS,Código,Tipo ADABAS,Tamanho,Campo DB2,Tipo DB2,Tamanho DB2,Observações
+NUMB-SOCIO-PRINCIPAL,AA,N,9.0,NUMB_SOCIO,NUMERIC,9.0,Chave primária - RG do sócio
+NOME-SOCIO-PRINCIPAL,AB,C,40,NOME_SOCIO,VARCHAR,40,Nome completo do sócio
+DATA-CADASTRO,AC,D,6,DATA_CADASTRO,DATE,10,Convertido para YYYY-MM-DD
+PERIODICO-PAGAMENTO,AD,P (Grupo),NA,SOCIOS_PAGAMENTO,Tabela filha,NA,Convertido em tabela 1:N
+DATA-VENCIMENTO,AE,D,6,DATA_VENCIMENTO,DATE,10,Dentro da tabela filha - convertido para YYYY-MM-DD
+VALR-MENSALIDADE,AF,P,6.2,VALR_MENSALIDADE,DECIMAL,6.2,Dentro da tabela filha
+PAGAMENTO-OK,AG,L,1,PAGAMENTO_OK,SMALLINT,1,Dentro da tabela filha - TRUE=1 FALSE=0
+CATG-SOCIO,BA,I,2,CATG_SOCIO,SMALLINT,2,Categoria do sócio
+INDI-DIVIDA,BB,L,1,INDI_DIVIDA,SMALLINT,1,Indicador de dívida
+DATA-BAIXA,CB,D,6,DATA_BAIXA,DATE,10,Data de término do contrato - convertido para YYYY-MM-DD
+HORA-BAIXA,CC,T,12,HORA_BAIXA,TIME,5,Hora de término do contrato - convertido para HH:MM
+OBSV-SOCIO,DA,A,500,OBSV_SOCIO,VARCHAR,500,Observações do sócio
+SUPER1,S1,SUPER,5,IDX_SOCIOS_SUPER1,Índice composto,NA,SUPER = BA + BB (CATG_SOCIO + INDI_DIVIDA)
+NA,NA,NA,NA,SEQUENCIAL,SMALLINT,2,Novo campo - sequencial para pagamentos (1-12)
