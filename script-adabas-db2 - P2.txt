@@ -226,7 +226,11 @@ FINALIZA.
 
 - Os scripts DB2 devem ser compatíveis com a estrutura identificada nos arquivos NATURAL e ADABAS.
 - Campos SUPER do Adabas não devem ser migrados como colunas físicas no DB2; devem ser convertidos
-  em índices compostos ou estruturas equivalentes de acesso. 
+  em índices compostos ou estruturas equivalentes de acesso.
+
+- Migração de estruturas Adabas para DB2 com preservação integral das definições SUPER existentes.
+  Toda SUPER do Adabas deve ser reproduzida no DB2 exatamente no mesmo formato, composição e ordem
+  de campos, sem criação de novas chaves, índices ou constraints não existentes na origem.  
 
 # Regras de Geração das Operações
 
