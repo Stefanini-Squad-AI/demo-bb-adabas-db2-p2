@@ -1,0 +1,23 @@
+-- DBATDP-18: Criacao tabelas DB2 - migracao ADABAS-SOCIOS
+-- Entidade principal SOCIO (ex-view ADABAS-SOCIOS)
+
+CREATE TABLE SOCIO (
+    NUMB_SOCIO_PRINCIPAL  DECIMAL(9, 0)  NOT NULL,
+    NOME_SOCIO_PRINCIPAL  VARCHAR(40)    NOT NULL,
+    DATA_CADASTRO         DATE           NOT NULL,
+    CATG_SOCIO            SMALLINT       NOT NULL,
+    INDI_DIVIDA           CHAR(1)        NOT NULL
+        CONSTRAINT CHK_SOCIO_INDI_DIVIDA
+            CHECK (INDI_DIVIDA IN ('Y', 'N')),
+    DATA_BAIXA            DATE,
+    HORA_BAIXA            CHAR(5),
+    OBSV_SOCIO            VARCHAR(500),
+    CONSTRAINT PK_SOCIO PRIMARY KEY (NUMB_SOCIO_PRINCIPAL)
+);
+
+-- SUPER1 (CATG-SOCIO + INDI-DIVIDA) replicada como indice composto
+CREATE INDEX IX_SOCIO_SUPER1
+    ON SOCIO (CATG_SOCIO, INDI_DIVIDA);
+
+COMMENT ON TABLE SOCIO IS
+    'Tabela principal de socios - migracao ADABAS-SOCIOS';
