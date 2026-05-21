@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo de Sócios - Modernização</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; background:#f4f6f8; color:#1f2937; }
+    .wrap { max-width: 980px; margin:0 auto; padding: 24px; }
+    .card { background:#fff; border:1px solid #d9e1ea; border-radius:8px; padding:18px; margin-bottom:16px; }
+    h1, h2 { margin-top:0; }
+    h1 { color:#0f3557; }
+    h2 { color:#1d4f7a; border-bottom:1px solid #e5e7eb; padding-bottom:6px; }
+    code { background:#eef3f8; padding:2px 4px; border-radius:4px; }
+    pre { background:#eef3f8; padding:12px; border-radius:6px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Módulo: Sócios</h1>
+      <p>Recorte funcional identificado a partir de <code>STFPCS00-P2</code> e do DDM <code>ADABAS-SOCIOS</code>.</p>
+    </div>
+
+    <div class="card">
+      <h2>Programas Natural atuais</h2>
+      <ul>
+        <li><code>STFPCS00-P2</code></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Dependências Adabas</h2>
+      <ul>
+        <li><code>ADABAS-SOCIOS</code></li>
+        <li><code>FIND SOCIO WITH NUMB-SOCIO-PRINCIPAL EQ #RG-CONSULTA</code></li>
+        <li><code>STORE</code> para inclusão de novo sócio</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Regras de negócio</h2>
+      <ul>
+        <li>RG é obrigatório e identifica univocamente o sócio.</li>
+        <li>Inclusão é bloqueada quando o RG já existe.</li>
+        <li>Nome, categoria e dia de vencimento são validados antes da gravação.</li>
+        <li>O novo sócio inicia com a primeira mensalidade paga.</li>
+        <li>São geradas 12 ocorrências de vencimento.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Serviços COBOL alvo</h2>
+      <ul>
+        <li><code>STFSC00C</code> - consulta por RG</li>
+        <li><code>STFSC00I</code> - inclusão de sócio</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Entidades DB2 alvo</h2>
+      <ul>
+        <li><code>TB_SOCIO</code></li>
+        <li><code>TB_SOCIO_PERIODICO</code></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>User Story pattern</h2>
+      <pre>Como operador de cadastro,
+quero incluir um sócio após validar RG, nome, categoria e vencimento,
+para manter o cadastro consistente e iniciar a cobrança corretamente.</pre>
+    </div>
+
+    <div class="card">
+      <h2>Riscos técnicos</h2>
+      <ul>
+        <li>Conversão inadequada da estrutura periódica de pagamentos.</li>
+        <li>Diferença de semântica entre Adabas e DB2 ao consultar/inserir.</li>
+        <li>Perda de comportamento de validação da tela Natural.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Modernização Mainframe</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#111; color:#e6e6e6; margin:0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .header { background:#163b66; border-radius:8px; padding:28px; margin-bottom:24px; }
+    h1, h2 { margin-top:0; }
+    h1 { color:#fff; }
+    h2 { color:#7cc7ff; border-bottom:1px solid #2d2d2d; padding-bottom:8px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:16px; }
+    .panel { background:#1b1b1b; border:1px solid #2b2b2b; border-radius:8px; padding:16px; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { text-align:left; padding:10px; border-bottom:1px solid #2a2a2a; vertical-align:top; }
+    th { background:#161616; }
+    .ok { color:#8fe28f; font-weight:bold; }
+    .run { color:#ffcc66; font-weight:bold; }
+    .pending { color:#b0b0b0; }
+    .risk { border-left:4px solid #ff6b6b; }
+    .activity li { margin-bottom:8px; }
+    a { color:#7cc7ff; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Natural/Adabas → COBOL/DB2</h1>
+      <p>Painel de modernização para o recorte funcional de sócios identificado no repositório.</p>
+    </div>
+
+    <section class="panel">
+      <h2>Objetivo</h2>
+      <p>Eliminar acesso direto ao Adabas no programa Natural e deslocar a persistência para um serviço COBOL sobre DB2.</p>
+      <p>Fluxo alvo: Natural → COBOL → DB2.</p>
+    </section>
+
+    <section class="grid" style="margin-top:16px;">
+      <div class="panel">
+        <h2>Fases</h2>
+        <ul>
+          <li><span class="run">Descoberta</span>: inventário e leitura do código Natural.</li>
+          <li><span class="run">Encapsulamento</span>: book Natural x COBOL e serviço de persistência.</li>
+          <li><span class="pending">Refatoração</span>: substituição do FIND/STORE por chamadas ao serviço.</li>
+          <li><span class="pending">Retirada</span>: desativação da dependência direta do Adabas.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h2>Estado do Inventário</h2>
+        <ul>
+          <li>Programas Natural analisados: 1</li>
+          <li>Arquivos Adabas analisados: 1</li>
+          <li>Operações encontradas: FIND, STORE</li>
+          <li>Módulos identificados: socios</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h2>Dependências</h2>
+        <ul>
+          <li>DDM <code>ADABAS-SOCIOS</code></li>
+          <li>Programa <code>STFPCS00-P2</code></li>
+          <li>CALLNAT externo para cálculo de valor de mensalidade</li>
+          <li>Estrutura periódica de pagamentos</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top:16px;">
+      <h2>Mapa de Migração</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Elemento</th>
+            <th>Origem</th>
+            <th>Destino</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Consulta de sócio</td>
+            <td>FIND no Adabas</td>
+            <td>COBOL <code>STFSC00C</code> + DB2</td>
+            <td class="run">Em definição</td>
+          </tr>
+          <tr>
+            <td>Inclusão de sócio</td>
+            <td>STORE no Adabas</td>
+            <td>COBOL <code>STFSC00I</code> + DB2</td>
+            <td class="run">Em definição</td>
+          </tr>
+          <tr>
+            <td>Regras de periodicidade</td>
+            <td>Natural local</td>
+            <td>Persistência relacional</td>
+            <td class="pending">A analisar</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="grid" style="margin-top:16px;">
+      <div class="panel risk">
+        <h2>Riscos</h2>
+        <ul>
+          <li>Perda de regra embutida em validação de tela.</li>
+          <li>Decomposição incorreta da estrutura periódica.</li>
+          <li>Divergência entre retorno funcional e SQLCODE.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h2>Activity Log</h2>
+        <ul class="activity">
+          <li>2026-05-21: inventário do programa Natural concluído.</li>
+          <li>2026-05-21: DDM Adabas de sócios mapeado.</li>
+          <li>2026-05-21: regras de negócio de inclusão extraídas.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top:16px;">
+      <h2>Documentação</h2>
+      <ul>
+        <li><a href="../system-overview.md">system-overview.md</a></li>
+        <li><a href="../module-file-map.md">module-file-map.md</a></li>
+        <li><a href="modules/socios/index.html">Módulo de sócios</a></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
