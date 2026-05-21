@@ -235,9 +235,10 @@ FINALIZA.
 - Campos SUPER do Adabas não devem ser migrados como colunas físicas no DB2; devem ser convertidos
   em índices compostos ou estruturas equivalentes de acesso.
 
-- Migração de estruturas Adabas para DB2 com preservação integral das definições SUPER existentes.
+- A Migração de estruturas Adabas para DB2 devem preservar integralmente as definições SUPER existentes.
   Toda SUPER do Adabas deve ser reproduzida no DB2 exatamente no mesmo formato, composição e ordem
-  de campos, sem criação de novas chaves, índices ou constraints não existentes na origem.  
+  de campos, sem criação de novas chaves, índices ou constraints não existentes na origem, sendo essa
+  regra obrigatória.  
 
 # Regras de Geração das Operações
 
