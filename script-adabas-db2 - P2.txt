@@ -16,6 +16,9 @@ Arquivos de referência:
 - Arquivo ADABAS:
   prg-natural-p2/ADABAS-SOCIOS-P2.txt
 
+- Obrigatório: Somente análise os arquivos mencionados nessa sessão para o processamento.
+  Não considere/leia outros arquivos, pastas etc do repositório.
+
 # Regras de geração dos arquivos
 
 Todos os arquivos gerados devem seguir a organização abaixo:
