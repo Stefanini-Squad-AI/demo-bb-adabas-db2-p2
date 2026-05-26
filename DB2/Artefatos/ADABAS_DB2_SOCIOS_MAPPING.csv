@@ -1,0 +1,40 @@
+ADABAS Field Name,ADABAS Code,ADABAS Type,ADABAS Length,DB2 Table,DB2 Column Name,DB2 Data Type,Remarks
+NUMB-SOCIO-PRINCIPAL,AA,Numeric,9.0,SOCIOS,NUMB_SOCIO_PRINCIPAL,DECIMAL(9,0),Primary Key - Member ID
+NOME-SOCIO-PRINCIPAL,AB,Character,40,SOCIOS,NOME_SOCIO_PRINCIPAL,CHAR(40),Member Full Name
+DATA-CADASTRO,AC,Date,6,SOCIOS,DATA_CADASTRO,DATE,Registration Date (Format: YYYY-MM-DD)
+PERIODICO-PAGAMENTO,AD,Group P1,N/A,PERIODICO_PAGAMENTO,N/A,Table,Converted to Child Table 1:N
+DATA-VENCIMENTO,AE,Date,6,PERIODICO_PAGAMENTO,DATA_VENCIMENTO,DATE,Due Date (Occurs 12 times)
+VALR-MENSALIDADE,AF,Packed Decimal,6.2,PERIODICO_PAGAMENTO,VALR_MENSALIDADE,DECIMAL(6,2),Monthly Value (Occurs 12 times)
+PAGAMENTO-OK,AG,Logical,1,PERIODICO_PAGAMENTO,PAGAMENTO_OK,CHAR(1),Payment OK Flag (Occurs 12 times)
+CATG-SOCIO,BA,Integer,2,SOCIOS,CATG_SOCIO,SMALLINT,Category (1=Principal, 2=Dependent)
+INDI-DIVIDA,BB,Logical,1,SOCIOS,INDI_DIVIDA,CHAR(1),Debt Indicator (T=Atrasada, F=Em dia)
+DATA-BAIXA,CB,Date,6,SOCIOS,DATA_BAIXA,DATE,Cancellation Date
+HORA-BAIXA,CC,Time,12,SOCIOS,HORA_BAIXA,TIME,Cancellation Time
+OBSV-SOCIO,DA,Alphanumeric,500,SOCIOS,OBSV_SOCIO,VARCHAR(500),Member Observation
+SUPER1,S1,Super,5,SOCIOS,"IDX_SUPER1_SOCIOS","Composite Index","Composed of CATG-SOCIO(2) + INDI-DIVIDA(1)"
+
+COBOL Programs,Operation,Input,Output,Remarks
+STFSC00C,Select (C),NUMB-SOCIO-PRINCIPAL,SOCIO Record,Retrieves member data from SOCIOS and PERIODICO_PAGAMENTO tables
+STFSC00I,Insert (I),SOCIO Record,Return Code + Message,Inserts new member in SOCIOS and creates 12 periodic payment records
+
+Natural Program Updates,Operation,File,Modification,Remarks
+STFPCS00-P2,Select (C),Original Program,"Removed: FIND SOCIO WITH NUMB-SOCIO-PRINCIPAL Added: CALLNAT STFSC00C","Lines with comments marking ADABAS removal"
+STFPCS00-P2,Insert (I),Original Program,"Removed: STORE Added: CALLNAT STFSC00I","Lines with comments marking ADABAS removal"
+
+File Organization,Folder,File,Purpose
+COBOL Copybooks,Cobol/src,STFSC00-SOCIO-IO.cpy,Input/Output data structure for member records
+COBOL Copybooks,Cobol/src,SQLCA.cpy,DB2 SQL Communications Area - Error handling
+COBOL Copybooks,Cobol/src,STFSC00-RETURN.cpy,Return code structure for operations
+COBOL Programs,Cobol,STFSC00C.cbl,Select operation - retrieves member data
+COBOL Programs,Cobol,STFSC00I.cbl,Insert operation - creates new members
+DB2 Scripts,DB2,CREATE_TABLES_SOCIOS.sql,Script to create SOCIOS and PERIODICO_PAGAMENTO tables
+DB2 Scripts,DB2,DROP_TABLES_SOCIOS.sql,Script to remove tables (cleanup)
+Natural LDA,prg-natural/LOCAL,STFSC00-LDA.txt,Local Data Area matching COBOL copybook
+Natural Program,prg-natural-p2,STFPCS00-P2-UPDATED.txt,Updated program with COBOL calls and ADABAS removal comments
+Documentation,DB2/Artefatos,ADABAS_DB2_SOCIOS_MAPPING.csv,This mapping file
+
+Return Codes,Code,Meaning,Source
+Standard DB2 Returns,0,Success/Record Found,DB2 SQLCODE
+Standard DB2 Returns,100,No Record Found,DB2 SQLCODE
+Standard DB2 Returns,803,Duplicate Key,DB2 SQLCODE
+Standard DB2 Returns,Negative,DB2 Error,DB2 SQLCODE

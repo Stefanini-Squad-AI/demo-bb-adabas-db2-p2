@@ -1,0 +1,11 @@
+-- DB2 SCRIPT - REMOVER TABELAS SOCIOS
+-- ATENÇÃO: Este script remove todas as tabelas e índices criados
+
+-- Remover índices
+DROP INDEX IDX_PERIODICO_VENCIMENTO;
+DROP INDEX IDX_DATA_CADASTRO_SOCIOS;
+DROP INDEX IDX_SUPER1_SOCIOS;
+
+-- Remover tabelas (ORDER: filha primeiro, depois pai)
+DROP TABLE PERIODICO_PAGAMENTO;
+DROP TABLE SOCIOS;
