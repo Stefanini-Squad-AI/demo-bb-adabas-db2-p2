@@ -1,22 +1,38 @@
-DEFINE DATA 
+DEFINE DATA
 LOCAL
-1 SOCIO VIEW OF ADABAS-SOCIOS
-  2  NUMB-SOCIO-PRINCIPAL
-  2  NOME-SOCIO-PRINCIPAL
-  2  DATA-CADASTRO
-  2  C*PERIODICO-PAGAMENTO
-  2  VALR-MENSALIDADE (12)
-  2  DATA-VENCIMENTO (12)
-  2  PAGAMENTO-OK (12)
-  2  CATG-SOCIO
-  2  INDI-DIVIDA
-  2  DATA-BAIXA
-  2  HORA-BAIXA
-  2  OBSV-CLIENTE
-  2  SUPER1
+USING "STFSC00L"
+*
+* Work variables for data processing
+1 NUMB-SOCIO-PRINCIPAL   N(9)
+1 NOME-SOCIO-PRINCIPAL   A(40)
+1 DATA-CADASTRO          N(8)
+1 CATG-SOCIO             I(2)
+1 INDI-DIVIDA            A(1)
+1 DATA-BAIXA             N(8)
+1 HORA-BAIXA             A(5)
+1 OBSV-CLIENTE           A(500)
+1 VALR-MENSALIDADE (12)  P(6,2)
+1 DATA-VENCIMENTO (12)   N(8)
+1 PAGAMENTO-OK (12)      A(1)
+*
+* Legacy Adabas structure (commented for reference and traceability)
+* 1 SOCIO VIEW OF ADABAS-SOCIOS
+*   2  NUMB-SOCIO-PRINCIPAL
+*   2  NOME-SOCIO-PRINCIPAL
+*   2  DATA-CADASTRO
+*   2  C*PERIODICO-PAGAMENTO
+*   2  VALR-MENSALIDADE (12)
+*   2  DATA-VENCIMENTO (12)
+*   2  PAGAMENTO-OK (12)
+*   2  CATG-SOCIO
+*   2  INDI-DIVIDA
+*   2  DATA-BAIXA
+*   2  HORA-BAIXA
+*   2  OBSV-CLIENTE
+*   2  SUPER1
 *
 1 #MAPA
-  2 #RG-CONSULTA (N7) 
+  2 #RG-CONSULTA (N7)
   2 #DIA-VENCIAMENTO (N2)
 *
 1 #INDICE (N2)
@@ -46,13 +62,37 @@ IF #RG-CONSULTA EQ 0
   REINPUT FULL 'Informe RG do novo sócio' MARK *#RG-CONSULTA
 END-IF
 *
-FIND SOCIO WITH NUMB-SOCIO-PRINCIPAL EQ #RG-CONSULTA
-  IF NO
+* Legacy FIND statement replaced with CALLNAT to STFSC00C (DB2 query)
+* FIND SOCIO WITH NUMB-SOCIO-PRINCIPAL EQ #RG-CONSULTA
+*   IF NO
+*     PERFORM INCLUI-SOCIO
+*     ESCAPE BOTTOM
+*   END-NOREC
+*   #TEXTO := 'Sócio já cadastrado.'
+* END-FIND
+
+* Populate input for COBOL query service
+STFSC00-OPERATION := 'C'
+STFSC00-NUMB-SOCIO-PRINCIPAL := #RG-CONSULTA
+
+* Call COBOL query service (STFSC00C)
+CALLNAT 'STFSC00C' STFSC00-OPERATION STFSC00-RETURN-CODE
+                   STFSC00-SOCIO STFSC00-PAGAMENTOS
+                   STFSC00-NUM-REGISTROS
+
+* Evaluate return code from STFSC00C
+EVALUATE STFSC00-RETURN-CODE
+  VALUE 000
+    * Record found - sócio already registered
+    #TEXTO := 'Sócio já cadastrado.'
+  VALUE 100
+    * Record not found - proceed with insertion
     PERFORM INCLUI-SOCIO
-    ESCAPE BOTTOM 
-  END-NOREC
-  #TEXTO := 'Sócio já cadastrado.'
-END-FIND
+    ESCAPE BOTTOM
+  VALUE OTHER
+    * Database error or other error
+    #TEXTO := 'Erro ao consultar banco de dados.'
+END-EVALUATE
 
 REINPUT #TEXTO
 * ----------------------------------------------------------------------
@@ -98,14 +138,51 @@ FOR #INDICE = 1 TO 12
   END-IF
 END-FOR
 *
+* Initialize debt indicator and settlement data to empty/false
 RESET INDI-DIVIDA DATA-BAIXA HORA-BAIXA
 *
 IF OBSV-CLIENTE EQ ' '
   OBSV-CLIENTE := 'Novo sócio'
 END-IF
 *
-STORE
-#TEXTO := 'Novo sócio incluído com sucesso.'
+* Legacy STORE statement replaced with CALLNAT to STFSC00I (DB2 insert)
+* STORE
+* #TEXTO := 'Novo sócio incluído com sucesso.'
+
+* Populate output fields for COBOL insert service
+STFSC00-OPERATION := 'I'
+STFSC00-NUMB-SOCIO-PRINCIPAL := NUMB-SOCIO-PRINCIPAL
+STFSC00-NOME-SOCIO-PRINCIPAL := NOME-SOCIO-PRINCIPAL
+STFSC00-DATA-CADASTRO := DATA-CADASTRO
+STFSC00-CATG-SOCIO := CATG-SOCIO
+STFSC00-INDI-DIVIDA := INDI-DIVIDA
+STFSC00-DATA-BAIXA := DATA-BAIXA
+STFSC00-HORA-BAIXA := HORA-BAIXA
+STFSC00-OBSV-SOCIO := OBSV-CLIENTE
+STFSC00-NUM-REGISTROS := 12
+
+* Populate payment array (up to 12 monthly payments)
+FOR #INDICE = 1 TO 12
+  STFSC00-SEQ-PAGAMENTO(#INDICE) := #INDICE
+  STFSC00-DATA-VENCIMENTO(#INDICE) := DATA-VENCIMENTO(#INDICE)
+  STFSC00-VALR-MENSALIDADE(#INDICE) := VALR-MENSALIDADE(#INDICE)
+  STFSC00-PAGAMENTO-OK(#INDICE) := PAGAMENTO-OK(#INDICE)
+END-FOR
+
+* Call COBOL insert service (STFSC00I)
+CALLNAT 'STFSC00I' STFSC00-OPERATION STFSC00-RETURN-CODE
+                   STFSC00-SOCIO STFSC00-PAGAMENTOS
+                   STFSC00-NUM-REGISTROS
+
+* Evaluate return code from STFSC00I
+EVALUATE STFSC00-RETURN-CODE
+  VALUE 000
+    #TEXTO := 'Novo sócio incluído com sucesso.'
+  VALUE 803
+    #TEXTO := 'Erro: Sócio já existe no banco de dados.'
+  VALUE OTHER
+    #TEXTO := 'Erro ao incluir novo sócio no banco de dados.'
+END-EVALUATE
 *
 END-SUBROUTINE
 * ----------------------------------------------------------------------

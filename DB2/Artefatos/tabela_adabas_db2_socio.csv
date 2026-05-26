@@ -1,0 +1,14 @@
+Adabas Field Code,Adabas Field Name,Adabas Type,Adabas Length,Adabas Format,DB2 Column Name,DB2 Type,DB2 Size/Precision,DB2 Null,DB2 PK/FK,Notes
+AA,NUMB-SOCIO-PRINCIPAL,N,9,0,NUMB_SOCIO_PRINCIPAL,DECIMAL,9 0,NOT NULL,PK,"Member RG number, unique identifier"
+AB,NOME-SOCIO-PRINCIPAL,C,40,"Variable",NOME_SOCIO_PRINCIPAL,VARCHAR,40,NOT NULL,"",Member full name
+AC,DATA-CADASTRO,D,6,"YYMMDD",DATA_CADASTRO,DATE,"",NOT NULL,"","Registration date, stored as YYYY-MM-DD"
+AD,PERIODICO-PAGAMENTO,PE,*,"*",SOCIO_PAGAMENTO,"TABLE","","","FK to SOCIO","Periodic element (PE) normalized to table SOCIO_PAGAMENTO"
+AE,DATA-VENCIMENTO,D,6,"YYMMDD",DATA_VENCIMENTO,DATE,"",NOT NULL,"FK (part of composite PK)","Payment due date, stored as YYYY-MM-DD"
+AF,VALR-MENSALIDADE,P,6,2,VALR_MENSALIDADE,DECIMAL,8 2,NOT NULL,"","Monthly fee amount"
+AG,PAGAMENTO-OK,L,1,"TRUE/FALSE",PAGAMENTO_OK,CHAR,1,NOT NULL,"","Payment status (Y/N)"
+BA,CATG-SOCIO,I,2,"1=Principal, 2=Dependent",CATG_SOCIO,SMALLINT,"",NOT NULL,"","Category: 1=Principal, 2=Dependent"
+BB,INDI-DIVIDA,L,1,"TRUE/FALSE",INDI_DIVIDA,CHAR,1,NOT NULL,"","Debt indicator (Y/N)"
+CB,DATA-BAIXA,D,6,"YYMMDD",DATA_BAIXA,DATE,"",YES,"","Contract end date, nullable"
+CC,HORA-BAIXA,T,12,"HHMMSS",HORA_BAIXA,CHAR,5,YES,"","Contract end time (HH:MM), nullable"
+DA,OBSV-SOCIO,A,500,"Variable",OBSV_SOCIO,VARCHAR,500,YES,"","Member notes/observations"
+S1,SUPER1,B,5,"Index",IX_SOCIO_SUPER1,"INDEX (CATG_SOCIO, INDI_DIVIDA)","","","","Composite index from SUPER1 (BA+BB)"
