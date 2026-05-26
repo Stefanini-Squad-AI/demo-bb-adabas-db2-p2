@@ -175,13 +175,6 @@ Declarar SOMENTE:
 
 - Para operações que realizem múltiplas consultas, leituras ou processamentos repetitivos em uma
   tabela DB2, deve-se obrigatoriamente utilizar cursor para recuperação dos dados.
-- Os performs dos programas Cobol gerados não devem conter o nome Periodico na sua estrutura fazendo referencia
-  a tabela Adabas migrada a DB2.
-  Exemplo: 
-  - Perform CARREGA-PERIODICO-CURSOR não deve ser usado. A estrutura do PERFORM deve Refletir o nome da tabela,
-    como CARREGA-{Nome_tabela}-CURSOR. Se o nome da tabela demasiado grande, abrevie.
-             
-
 - A declaração de todos os comandos de Cursor do DB2 devem estar declaradas na WORKING STORAGE DIVISION.  
 
 ### Estrutura interna do programa
@@ -235,10 +228,9 @@ FINALIZA.
 - Campos SUPER do Adabas não devem ser migrados como colunas físicas no DB2; devem ser convertidos
   em índices compostos ou estruturas equivalentes de acesso.
 
-- A Migração de estruturas Adabas para DB2 devem preservar integralmente as definições SUPER existentes.
+- Migração de estruturas Adabas para DB2 com preservação integral das definições SUPER existentes.
   Toda SUPER do Adabas deve ser reproduzida no DB2 exatamente no mesmo formato, composição e ordem
-  de campos, sem criação de novas chaves, índices ou constraints não existentes na origem, sendo essa
-  regra obrigatória.  
+  de campos, sem criação de novas chaves, índices ou constraints não existentes na origem.  
 
 # Regras de Geração das Operações
 
