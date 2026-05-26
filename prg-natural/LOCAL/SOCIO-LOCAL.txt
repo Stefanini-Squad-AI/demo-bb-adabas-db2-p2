@@ -1,0 +1,22 @@
+* LOCAL DATA AREA - SOCIO-LOCAL
+* Purpose: Communication with COBOL programs (STFSC00C, STFSC00I)
+* Equivalent to ADABAS-SOCIOS structure for DB2 access
+* Used by: Natural programs calling STFSC00* programs
+* ================================================================
+
+LOCAL USING "SOCIO-LOCAL"
+1 SOCIO-LKSP.
+  2  SO-NUMB-SOCIO-PRINCIPAL       (N9)
+  2  SO-NOME-SOCIO-PRINCIPAL       (A40)
+  2  SO-DATA-CADASTRO              (A10)
+  2  SO-CATG-SOCIO                 (I2)
+  2  SO-INDI-DIVIDA                (A1)
+  2  SO-DATA-BAIXA                 (A10)
+  2  SO-HORA-BAIXA                 (A8)
+  2  SO-OBSV-SOCIO                 (A500)
+  2  SO-PERIODICO-PAGAMENTO (12).
+    3  SO-DATA-VENCIMENTO          (A10)
+    3  SO-VALR-MENSALIDADE         (P4.2)
+    3  SO-PAGAMENTO-OK             (A1)
+  2  SO-RETURN-CODE                (I2)
+  2  SO-MSG-ERROR                  (A100)
