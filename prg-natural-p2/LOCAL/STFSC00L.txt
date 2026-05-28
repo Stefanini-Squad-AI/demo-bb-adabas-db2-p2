@@ -1,0 +1,45 @@
+* ================================================================
+* LOCAL DATA AREA: STFSC00L
+* Purpose: Communication area between Natural and COBOL programs
+* Description: Data structures for SOCIO entity operations
+* Migration: Adabas ADABAS-SOCIOS to DB2 (SOCIO, SOCIO_PAGAMENTO)
+* ================================================================
+
+DEFINE DATA LOCAL
+*
+* ================================================================
+* Control Fields
+* ================================================================
+1 STFSC00-OPERATION           A(1)
+1 STFSC00-RETURN-CODE         N(3)
+*
+* ================================================================
+* SOCIO Main Record Fields
+* ================================================================
+1 STFSC00-SOCIO
+  2 STFSC00-NUMB-SOCIO-PRINCIPAL   N(9)
+  2 STFSC00-NOME-SOCIO-PRINCIPAL   A(40)
+  2 STFSC00-DATA-CADASTRO          N(8)
+  2 STFSC00-CATG-SOCIO             I(2)
+  2 STFSC00-INDI-DIVIDA            A(1)
+  2 STFSC00-DATA-BAIXA             N(8)
+  2 STFSC00-HORA-BAIXA             A(5)
+  2 STFSC00-OBSV-SOCIO             A(500)
+*
+* ================================================================
+* SOCIO_PAGAMENTO Array (Periodic Payments - PE normalization)
+* Max 12 occurrences per month in a year
+* ================================================================
+1 STFSC00-PAGAMENTOS
+  2 STFSC00-PAGAMENTO (12)
+    3 STFSC00-SEQ-PAGAMENTO         I(2)
+    3 STFSC00-DATA-VENCIMENTO       N(8)
+    3 STFSC00-VALR-MENSALIDADE      P(6,2)
+    3 STFSC00-PAGAMENTO-OK          A(1)
+*
+* ================================================================
+* Additional Processing Fields
+* ================================================================
+1 STFSC00-NUM-REGISTROS            I(4) VALUE 0
+*
+END-DEFINE
